@@ -1,0 +1,11 @@
+.background-light {
+background: linear-gradient(45deg, rgba(36,36,36,1) 0%, rgba(60,60,60,1) 10%, rgba(85,85,85,1) 20%, rgba(92,92,92,1) 30%, rgba(119,119,119,1) 40%, rgba(128,128,128,1) 50%, rgba(150,150,150,1) 60%, rgba(177,176,177,1) 70%, rgba(198,198,198,1) 80%, rgba(200,200,200,1) 90%, rgba(219,219,219,1) 100%);
+}
+
+.invisible {
+	display: block;
+}
+
+.background-regsuccess {
+	background: url("../img/landscape_04.jpg");
+}
