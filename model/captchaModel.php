@@ -102,3 +102,22 @@ if(isset($_POST['case'])){
 
 }
 
+if(isset($_POST['questionId']) && isset($_POST['imageId'])) {
+    $questionId = $_POST['questionId'];
+    $imageId = $_POST['imageId'];
+
+    //$insertion = "INSERT INTO couple(IdImage, IdQuestion, PositionCouple, CompteurCouple) VALUES ('$IdImage','$IdQuestion', '$PositionCouple', '$CompteurCouple')";
+
+    $insertion = "INSERT INTO couple(IdImage, IdQuestion, PositionCouple, CompteurCouple) VALUES ($imageId, $questionId, 2342, 34234)";
+        
+    $execute = $bdd-> query($insertion);
+
+
+    
+            
+    if($execute == true){
+        echo "succes";
+    }else{
+        echo "faille";
+    }
+}

@@ -44,22 +44,34 @@ $id_Qst = $db->query('SELECT * FROM question order by rand() Limit 5');
     </style>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
     <script>
-        $(document).ready(function() {
+        var questionId, imageId;
+        
+        function get(imageId) {
+             
+            $('#actionBtn').removeAttr('disabled');
 
-            document.addEventListener('click', function(e) {
-                console.log(e);
-                if (e.target && e.target.id == '1') {
-                    console.log('ásdfas');
+            $('#imageId').val(imageId);
+            var que = document.getElementsByName('question');
+              
+            for(i = 0; i < que.length; i++) {
+                
+                if(que[i].checked) {
+                    $('#questionId').val(que[i].value);
                 }
-            });
+            }
 
+            
+            
+        }       
+        
 
-
+        $(document).ready(function() {
             function tes(event) {
                 if (event.target.nodeName == "TD") {
                     event.target.classList.toggle("Clicked")
                 }
             }
+
 
             function get(id) {
                 $('.formulaire').submit(function() {
@@ -76,8 +88,6 @@ $id_Qst = $db->query('SELECT * FROM question order by rand() Limit 5');
                     })
                 });
             }
-
-
         });
     </script>
 
@@ -86,21 +96,29 @@ $id_Qst = $db->query('SELECT * FROM question order by rand() Limit 5');
 
 <body>
     <div>
-
-
+        <a href="#demo">Aide</a>
+        <div id="demo" class="modal">
+            <div class="modal_content">
+                <h1>Essai</h1>
+                <p>Bienvenue sur la fenêtre aide !</p>
+                <a href="#" class="modal_close">&times;</a>
+            </div>
+        </div>
         <div class="container">
             <div class="row">
                 <form method="post" action="../model/captchaModel.php" class="formulaire">
+                    <input type="hidden" name="questionId" id="questionId">
+                    <input type="hidden" name="imageId" id="imageId">
                     <div class="col-md-6 col-lg-4 col-xl-6">
-                        <div class=" border-0" id="essai">
-                            <div class="">
+                        <div class="card border-0" id="essai">
+                            <div class="card-body">
                                 <h4>Questions</h4>
                                 <div class="inputGroup">
                                     <?php
                                     while ($return = $id_Qst->fetch()) {
                                         //foreach ($question as $key){
                                         echo '
-                                        <input type="radio" name="question" id="question" value="' . $return['IdQuestion'] . '"> 
+                                        <input type="radio" name="question" id="question' . $return['IdQuestion'] . '" value="' . $return['IdQuestion'] . '"  checked > 
                                         <label for="question"> ' . $return['LibelleQuestion'] . ' </label> <br>
                                         ';
                                     }
@@ -109,34 +127,33 @@ $id_Qst = $db->query('SELECT * FROM question order by rand() Limit 5');
                                 </div>
                             </div>
                         </div>
-                        <!--<button type="submit" name ="submit" >Valider</button> -->
+                        <button type="submit" name="submit" id="actionBtn" disabled>Valider</button>
 
+                    </div>
+                    <div class="col-md-6 col-lg-4 col-xl-6">
+                        <div class="card border-0">
+                            <table width="465" cellspacing="0" cellpadding="0" height="465" >
+                                <tr>
+                                    <td id="1" class="i1" name="image-tag" value="TOP-LEFT" onClick="get(this.id);"></td>
+                                    <td id="2" class="i2" name="image-tag" value="TOP-CENTER" onClick="get(this.id);"></td>
+                                    <td id="3" class="i3" name="image-tag" value="TOP-LEFT" onClick="get(this.id);"></td>
+                                </tr>
+                                <tr>
+                                    <td id="4" class="i4" name="image-tag" value="CENTER-LEFT" onClick="get(this.id);"></td>
+                                    <td id="5" class="i5" name="image-tag" value="CENTER-CENTER" onClick="get(this.id);"></td>
+                                    <td id="6" class="i6" name="image-tag" value="CENTER-RIGHT" onClick="get(this.id);"></td>
+                                </tr>
+                                <tr>
+                                    <td id="7" class="i7" name="image-tag" value="BOTTOM-LEFT" onClick="get(this.id);"></td>
+                                    <td id="8" class="i8" name="image-tag" value="BOTTOM-CENTER" onClick="get(this.id);"></td>
+                                    <td id="9" class="i9" name="image-tag" value="BOTTOM-RIGHT" onClick="get(this.id);"></td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </form>
-                <div class="col-md-6 col-lg-4 col-xl-6">
-                    <div class=" border-0">
-                        <table style="bottom: 0px; left: 0px" width="465" cellspacing="0" cellpadding="0" height="465" onClick="tes(event);">
-                            <tr>
-                                <td id="1" class="i1" value="TOP-LEFT" onClick="get(this.id);"></td>
-                                <td id="2" class="i2" value="TOP-CENTER" onClick="get(this.id);"></td>
-                                <td id="3" class="i3" value="TOP-LEFT" onClick="get(this.id);"></td>
-                            </tr>
-                            <tr>
-                                <td id="4" class="i4" value="CENTER-LEFT" onClick="get(this.id);"></td>
-                                <td id="5" class="i5" value="CENTER-CENTER" onClick="get(this.id);"></td>
-                                <td id="6" class="i6" value="CENTER-RIGHT" onClick="get(this.id);"></td>
-                            </tr>
-                            <tr>
-                                <td id="7" class="i7" value="BOTTOM-LEFT" onClick="get(this.id);"></td>
-                                <td id="8" class="i8" value="BOTTOM-CENTER" onClick="get(this.id);"></td>
-                                <td id="9" class="i9" value="BOTTOM-RIGHT" onClick="get(this.id);"></td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-
                 <!--<button type="submit" id="refresh" onclick="location.reload();">Raffraichir ou imageRaffraichir</button>-->
-                <!--<button type="submit" id="refresh" onclick="location.reload();"><img src ="../view/refresh.png" alt ='imageRaffraichir' width = "20px" height ="22px"></button> -->
+                <button type="submit" id="refresh" onclick="location.reload();"><img src="../view/refresh.png" alt='imageRaffraichir' width="20px" height="22px"></button>
             </div>
         </div>
     </div>
