@@ -1,10 +1,10 @@
 <?php
-
-$bdd = new PDO('mysql:host=localhost;dbname=captcha', 'root', '',  array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+include_once('dbconnect.php');
+include_once('../controller/functions.php');
 
 if (!isset($_POST['question'])){
 	//Requête permettant de récupérer les images
-	$get_image = $db->prepare('SELECT LienImage FROM image ORDER BY rand() LIMIT 2');
+	$get_image = $db->prepare('SELECT IdImage, LienImage FROM image ORDER BY rand() LIMIT 2');
     
 	//Requête permettant de récupérer les questions
 	$get_question = $db->prepare('SELECT LibelleQuestion FROM question ORDER BY rand() LIMIT 5');
@@ -23,7 +23,8 @@ if (!isset($_POST['question'])){
 	try{
 		$get_image->execute();
 		$image = $get_image->fetchall();
-
+        
+        
 	} catch (Exception $e){
 	    // En cas d'erreur, on affiche un message et on arrête tout
 	    $error = "Erreur lors de la récupération des images";
@@ -59,14 +60,14 @@ if (!isset($_POST['question'])){
 
 echo $a;
 }*/
-if(isset($_POST['case'])){
+/* if(isset($_POST['case'])){
     $i = $_POST['case'];
     $insertion = "INSERT INTO test (compteur) VALUES ('$i')";
         
     $execute = $bdd-> query($insertion);
 
 }
-//if(isset($_POST['submit'])){
+if(isset($_POST['submit'])){
     if(isset($_POST['case'])){
         $i = $_POST['case'];
         if(isset($_POST['question']) ){
@@ -100,24 +101,26 @@ if(isset($_POST['case'])){
             }
         }
 
-}
+}*/
 
-if(isset($_POST['questionId']) && isset($_POST['imageId'])) {
+if(isset($_POST['questionId']) && isset($_POST['imageId']) && isset($_POST['cellId'])) {
     $questionId = $_POST['questionId'];
     $imageId = $_POST['imageId'];
+    $cellId = $_POST['cellId'];
+
 
     //$insertion = "INSERT INTO couple(IdImage, IdQuestion, PositionCouple, CompteurCouple) VALUES ('$IdImage','$IdQuestion', '$PositionCouple', '$CompteurCouple')";
 
-    $insertion = "INSERT INTO couple(IdImage, IdQuestion, PositionCouple, CompteurCouple) VALUES ($imageId, $questionId, 2342, 34234)";
-        
-    $execute = $bdd-> query($insertion);
-
-
+    $execute = save_selection($imageId, $questionId, $cellId);
+    if($execute !== true) {
+        var_dump('execute failed');
+    }
     
+    $isValid = is_valid($questionId, $cellId);
             
-    if($execute == true){
-        echo "succes";
+    if($execute === true && $isValid === true){
+        header('Location:../controller/captcha.php');
     }else{
-        echo "faille";
+        echo "failed";
     }
 }

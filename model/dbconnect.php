@@ -1,10 +1,10 @@
 <!--Fichier header-->
 <?php
-if(!defined("okdb")){
+/* if(!defined("okdb")){
         header('HTTP/2.0 403 Forbidden', TRUE, 403);
 
         die('<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN"><html><head><title>403 Forbidden</title></head><body><h1>This file has been protected</h1></body></html>');
-}
+} */
 function connect($host,$dbname,$charset,$user,$password) { 
     try
     {
@@ -21,4 +21,40 @@ function connect($host,$dbname,$charset,$user,$password) {
     }
     return $db; 
 }
-$db = connect('localhost','captcha','utf8','root','');
+$db = connect('localhost','captcha','utf8','root',''); 
+
+
+
+class ConnectDb {
+    // Hold the class instance.
+    private static $instance = null;
+    private $conn;
+    
+    private $host = 'localhost';
+    private $user = 'root';
+    private $pass = '';
+    private $name = 'captcha';
+     
+    // The db connection is established in the private constructor.
+    private function __construct()
+    {
+      $this->conn = new PDO("mysql:host={$this->host};
+      dbname={$this->name}", $this->user,$this->pass,
+      array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'utf8'"));
+    }
+    
+    public static function getInstance()
+    {
+      if(!self::$instance)
+      {
+        self::$instance = new ConnectDb();
+      }
+     
+      return self::$instance;
+    }
+    
+    public function getConnection()
+    {
+      return $this->conn;
+    }
+  }

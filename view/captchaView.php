@@ -1,15 +1,15 @@
 <?php
 
 header("Content-type: text/html, charset=UTF-8");
-$question_selected = (isset($_POST['question'])) ? trim(nl2br(htmlspecialchars($_POST['question']))) : '';
-$id_Qst = $db->query('SELECT * FROM question order by rand() Limit 5');
+include_once('../controller/functions.php');
+$questions = get_random_question();
+$images = get_random_image();
+$imgtoshow = '../public/img/'.$images['LienImage'];
+$img_id_shown = $images['IdImage']; 
 
 ?>
-
 <!DOCTYPE html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
 <html>
-
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
@@ -41,56 +41,20 @@ $id_Qst = $db->query('SELECT * FROM question order by rand() Limit 5');
             top: 450px;
             left: 565px;
         }
+    
+	.i1 { background: url(<?php echo $imgtoshow ?>) no-repeat left top; }
+	.i2 { background: url(<?php echo $imgtoshow ?>) no-repeat center top; }
+	.i3 { background: url(<?php echo $imgtoshow ?>) no-repeat right top; }
+	.i4 { background: url(<?php echo $imgtoshow ?>) no-repeat left center; }
+	.i5 { background: url(<?php echo $imgtoshow ?>) no-repeat center center; }
+	.i6 { background: url(<?php echo $imgtoshow ?>) no-repeat right center; }
+	.i7 { background: url(<?php echo $imgtoshow ?>) no-repeat left bottom; }
+	.i8 { background: url(<?php echo $imgtoshow ?>) no-repeat center bottom; }
+	.i9 { background: url(<?php echo $imgtoshow ?>) no-repeat right bottom; }
+    .td { width: 150px; height: 150px; }
+</style>
+
     </style>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
-    <script>
-        var questionId, imageId;
-        
-        function get(imageId) {
-             
-            $('#actionBtn').removeAttr('disabled');
-
-            $('#imageId').val(imageId);
-            var que = document.getElementsByName('question');
-              
-            for(i = 0; i < que.length; i++) {
-                
-                if(que[i].checked) {
-                    $('#questionId').val(que[i].value);
-                }
-            }
-
-            
-            
-        }       
-        
-
-        $(document).ready(function() {
-            function tes(event) {
-                if (event.target.nodeName == "TD") {
-                    event.target.classList.toggle("Clicked")
-                }
-            }
-
-
-            function get(id) {
-                $('.formulaire').submit(function() {
-                    var im = id;
-                    $.ajax({
-                        type: "POST",
-                        url: "../controller/captcha.php",
-                        data: {
-                            'case': im
-                        },
-                        success: function() {
-                            //alert(id);
-                        }
-                    })
-                });
-            }
-        });
-    </script>
-
 
 </head>
 
@@ -108,18 +72,19 @@ $id_Qst = $db->query('SELECT * FROM question order by rand() Limit 5');
             <div class="row">
                 <form method="post" action="../model/captchaModel.php" class="formulaire">
                     <input type="hidden" name="questionId" id="questionId">
-                    <input type="hidden" name="imageId" id="imageId">
+                    <input type="hidden" name="imageId" id="imageId" value="<?= $img_id_shown ?>">
+                    <input type="hidden" name="cellId" id="cellId">
                     <div class="col-md-6 col-lg-4 col-xl-6">
                         <div class="card border-0" id="essai">
                             <div class="card-body">
                                 <h4>Questions</h4>
                                 <div class="inputGroup">
                                     <?php
-                                    while ($return = $id_Qst->fetch()) {
-                                        //foreach ($question as $key){
+                                    //while ($return = $id_Qst->fetch()) {
+                                        foreach ($questions as $questionObj){
                                         echo '
-                                        <input type="radio" name="question" id="question' . $return['IdQuestion'] . '" value="' . $return['IdQuestion'] . '"  checked > 
-                                        <label for="question"> ' . $return['LibelleQuestion'] . ' </label> <br>
+                                        <input type="radio" name="question" id="question' . $questionObj['IdQuestion'] . '" value="' . $questionObj['IdQuestion'] . '"  checked > 
+                                        <label for="question"> ' . $questionObj['LibelleQuestion'] . ' </label> <br>
                                         ';
                                     }
 
@@ -153,7 +118,7 @@ $id_Qst = $db->query('SELECT * FROM question order by rand() Limit 5');
                     </div>
                 </form>
                 <!--<button type="submit" id="refresh" onclick="location.reload();">Raffraichir ou imageRaffraichir</button>-->
-                <button type="submit" id="refresh" onclick="location.reload();"><img src="../view/refresh.png" alt='imageRaffraichir' width="20px" height="22px"></button>
+                <button type="submit" id="refresh" onclick="reloadImg();"><img src="../view/refresh.png" alt='imageRaffraichir' width="20px" height="22px"></button>
             </div>
         </div>
     </div>
@@ -165,7 +130,8 @@ $id_Qst = $db->query('SELECT * FROM question order by rand() Limit 5');
     <script src="../vendor/js/bs-init.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
     <script src="../vendor/js/theme.js"></script>
-    <script src="../public/js/divide_img.js"></script>
+    <script src="../public/js/scripts.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
 </body>
 
 </html>

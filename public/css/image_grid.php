@@ -7,24 +7,12 @@ if(!defined("okcss")){
 } else {
 		header("Content-type: text/css, charset=UTF-8");
 		$repository_image = "../public/img/";
-		foreach ($image as $key) {
-			$imgtoshow = "../public/img/".$key[0];
-
-    }
+/* 		foreach ($image as $key) {
+			$imgtoshow = "../public/img/".$key[1];
+			$id_img_shown = $key[0];
+    	} */
 }
 
 ?>
 
-<style>
-    
-	.i1 { background: url(<?php echo $imgtoshow ?>) no-repeat left top; }
-	.i2 { background: url(<?php echo $imgtoshow ?>) no-repeat center top; }
-	.i3 { background: url(<?php echo $imgtoshow ?>) no-repeat right top; }
-	.i4 { background: url(<?php echo $imgtoshow ?>) no-repeat left center; }
-	.i5 { background: url(<?php echo $imgtoshow ?>) no-repeat center center; }
-	.i6 { background: url(<?php echo $imgtoshow ?>) no-repeat right center; }
-	.i7 { background: url(<?php echo $imgtoshow ?>) no-repeat left bottom; }
-	.i8 { background: url(<?php echo $imgtoshow ?>) no-repeat center bottom; }
-	.i9 { background: url(<?php echo $imgtoshow ?>) no-repeat right bottom; }
-    .td { width: 150px; height: 150px; }
-</style>
+
