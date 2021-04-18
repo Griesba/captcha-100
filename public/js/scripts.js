@@ -99,9 +99,11 @@ function checkResponse () {
             if(!!jsonResponse.valid) {
                 $('#affichageSucces').show();
                 $('#affichageEchec').hide();
+                $('#responseMsg').hide();
             } else {
                 $('#affichageEchec').show();
                 $('#affichageSucces').hide();
+                $('#responseMsg').hide();
             }
 
             if(jsonResponse.count >= 1) {
