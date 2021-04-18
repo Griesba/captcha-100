@@ -4,12 +4,13 @@ header("Content-type: text/html, charset=UTF-8");
 include_once('../controller/functions.php');
 $questions = get_random_question();
 $images = get_random_image();
-$imgtoshow = '../public/img/'.$images['LienImage'];
-$img_id_shown = $images['IdImage']; 
+$imgtoshow = '../public/img/' . $images['LienImage'];
+$img_id_shown = $images['IdImage'];
 
 ?>
 <!DOCTYPE html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
 <html>
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
@@ -36,91 +37,115 @@ $img_id_shown = $images['IdImage'];
             height: 153px !important;
         }
 
-        #refresh {
-            position: absolute;
-            top: 450px;
-            left: 565px;
-        }
-    
-	.i1 { background: url(<?php echo $imgtoshow ?>) no-repeat left top; }
-	.i2 { background: url(<?php echo $imgtoshow ?>) no-repeat center top; }
-	.i3 { background: url(<?php echo $imgtoshow ?>) no-repeat right top; }
-	.i4 { background: url(<?php echo $imgtoshow ?>) no-repeat left center; }
-	.i5 { background: url(<?php echo $imgtoshow ?>) no-repeat center center; }
-	.i6 { background: url(<?php echo $imgtoshow ?>) no-repeat right center; }
-	.i7 { background: url(<?php echo $imgtoshow ?>) no-repeat left bottom; }
-	.i8 { background: url(<?php echo $imgtoshow ?>) no-repeat center bottom; }
-	.i9 { background: url(<?php echo $imgtoshow ?>) no-repeat right bottom; }
-    .td { width: 150px; height: 150px; }
-</style>
 
+        .i1 {
+            background: url(<?php echo $imgtoshow ?>) no-repeat left top;
+        }
+
+        .i2 {
+            background: url(<?php echo $imgtoshow ?>) no-repeat center top;
+        }
+
+        .i3 {
+            background: url(<?php echo $imgtoshow ?>) no-repeat right top;
+        }
+
+        .i4 {
+            background: url(<?php echo $imgtoshow ?>) no-repeat left center;
+        }
+
+        .i5 {
+            background: url(<?php echo $imgtoshow ?>) no-repeat center center;
+        }
+
+        .i6 {
+            background: url(<?php echo $imgtoshow ?>) no-repeat right center;
+        }
+
+        .i7 {
+            background: url(<?php echo $imgtoshow ?>) no-repeat left bottom;
+        }
+
+        .i8 {
+            background: url(<?php echo $imgtoshow ?>) no-repeat center bottom;
+        }
+
+        .i9 {
+            background: url(<?php echo $imgtoshow ?>) no-repeat right bottom;
+        }
     </style>
 
 </head>
 
 <body>
     <div>
-        <a href="#demo">Aide</a>
+        <a href="#demo">Ouvrir</a>
+        <h1 id="responseMsg" style="display: none; color: blue; margin:100px">Vous êtes humain</h1>
         <div id="demo" class="modal">
             <div class="modal_content">
-                <h1>Essai</h1>
-                <p>Bienvenue sur la fenêtre aide !</p>
+                <p id="affichageSucces" style="display: none;">Bonne réponse</p>
+                <p id="affichageEchec" style="display: none; color:red; ">Mauvaise réponse</p>
                 <a href="#" class="modal_close">&times;</a>
-            </div>
-        </div>
-        <div class="container">
+                <div class="container">
             <div class="row">
-                <form method="post" action="../model/captchaModel.php" class="formulaire">
-                    <input type="hidden" name="questionId" id="questionId">
-                    <input type="hidden" name="imageId" id="imageId" value="<?= $img_id_shown ?>">
-                    <input type="hidden" name="cellId" id="cellId">
-                    <div class="col-md-6 col-lg-4 col-xl-6">
-                        <div class="card border-0" id="essai">
-                            <div class="card-body">
+
+                <div class="col-md-6 col-lg-4 col-xl-6">
+                    <form method="post" action="../model/captchaModel.php" class="formulaire">
+                        <input type="hidden" name="questionId" id="questionId">
+                        <input type="hidden" name="imageId" id="imageId" value="<?= $img_id_shown ?>">
+                        <input type="hidden" name="cellId" id="cellId">
+                        <div class="border-0" id="essai">
+                            <div class="">
                                 <h4>Questions</h4>
-                                <div class="inputGroup">
+                                <div id="questionsGroup" class="inputGroup">
                                     <?php
-                                    //while ($return = $id_Qst->fetch()) {
-                                        foreach ($questions as $questionObj){
+                                    
+                                    foreach ($questions as $questionObj) {
                                         echo '
                                         <input type="radio" name="question" id="question' . $questionObj['IdQuestion'] . '" value="' . $questionObj['IdQuestion'] . '"  checked > 
-                                        <label for="question"> ' . $questionObj['LibelleQuestion'] . ' </label> <br>
+                                        <label for="question' . $questionObj['IdQuestion'] . '"> ' . $questionObj['LibelleQuestion'] . ' </label> <br>
                                         ';
                                     }
 
                                     ?>
                                 </div>
+                                <div class="row">
+                                    <button type="button" style="margin-left: 50px; margin-right: 50px" onclick="reloadImg();">
+                                    <img src="../view/refresh.png" alt='imageRaffraichir' width="20px" height="22px"></button>
+                                    <button type="button" onclick="checkResponse()" id="actionBtn" class="btn btn-primary" disabled>Valider</button>
+                                </div>
                             </div>
                         </div>
-                        <button type="submit" name="submit" id="actionBtn" disabled>Valider</button>
 
+                </div>
+                <div class="col-md-6 col-lg-4 col-xl-6">
+                    <div class=" border-0">
+                        <table width="380" height="380" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td id="1" class="i1" name="image-tag" value="TOP-LEFT" onClick="get(this.id);"></td>
+                                <td id="2" class="i2" name="image-tag" value="TOP-CENTER" onClick="get(this.id);"></td>
+                                <td id="3" class="i3" name="image-tag" value="TOP-LEFT" onClick="get(this.id);"></td>
+                            </tr>
+                            <tr>
+                                <td id="4" class="i4" name="image-tag" value="CENTER-LEFT" onClick="get(this.id);"></td>
+                                <td id="5" class="i5" name="image-tag" value="CENTER-CENTER" onClick="get(this.id);"></td>
+                                <td id="6" class="i6" name="image-tag" value="CENTER-RIGHT" onClick="get(this.id);"></td>
+                            </tr>
+                            <tr>
+                                <td id="7" class="i7" name="image-tag" value="BOTTOM-LEFT" onClick="get(this.id);"></td>
+                                <td id="8" class="i8" name="image-tag" value="BOTTOM-CENTER" onClick="get(this.id);"></td>
+                                <td id="9" class="i9" name="image-tag" value="BOTTOM-RIGHT" onClick="get(this.id);"></td>
+                            </tr>
+                        </table>
                     </div>
-                    <div class="col-md-6 col-lg-4 col-xl-6">
-                        <div class="card border-0">
-                            <table width="465" cellspacing="0" cellpadding="0" height="465" >
-                                <tr>
-                                    <td id="1" class="i1" name="image-tag" value="TOP-LEFT" onClick="get(this.id);"></td>
-                                    <td id="2" class="i2" name="image-tag" value="TOP-CENTER" onClick="get(this.id);"></td>
-                                    <td id="3" class="i3" name="image-tag" value="TOP-LEFT" onClick="get(this.id);"></td>
-                                </tr>
-                                <tr>
-                                    <td id="4" class="i4" name="image-tag" value="CENTER-LEFT" onClick="get(this.id);"></td>
-                                    <td id="5" class="i5" name="image-tag" value="CENTER-CENTER" onClick="get(this.id);"></td>
-                                    <td id="6" class="i6" name="image-tag" value="CENTER-RIGHT" onClick="get(this.id);"></td>
-                                </tr>
-                                <tr>
-                                    <td id="7" class="i7" name="image-tag" value="BOTTOM-LEFT" onClick="get(this.id);"></td>
-                                    <td id="8" class="i8" name="image-tag" value="BOTTOM-CENTER" onClick="get(this.id);"></td>
-                                    <td id="9" class="i9" name="image-tag" value="BOTTOM-RIGHT" onClick="get(this.id);"></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </form>
-                <!--<button type="submit" id="refresh" onclick="location.reload();">Raffraichir ou imageRaffraichir</button>-->
-                <button type="submit" id="refresh" onclick="reloadImg();"><img src="../view/refresh.png" alt='imageRaffraichir' width="20px" height="22px"></button>
+                </div>
+
+            </div>
+
+        </div>
             </div>
         </div>
+
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.6.1/pikaday.min.js"></script>
@@ -132,6 +157,7 @@ $img_id_shown = $images['IdImage'];
     <script src="../vendor/js/theme.js"></script>
     <script src="../public/js/scripts.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 </body>
 
 </html>

@@ -60,7 +60,7 @@ function save_selection ($imageId, $questionId, $cellId) {
 function is_valid($id_cell, $id_question) {
     $instance = ConnectDb::getInstance();
     $conn = $instance->getConnection();
-
+    
     $statement =  $conn->prepare('SELECT questionId, cell_id FROM reponses WHERE questionId = :id_question && cell_id = :id_cell');
 
     $statement->bindParam(':id_question', $id_question, PDO::PARAM_INT);

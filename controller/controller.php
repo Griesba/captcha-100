@@ -2,17 +2,76 @@
 
 include_once('functions.php');
 
+if(session_status() == PHP_SESSION_NONE){
+    session_start();
+}
+
 $action = $_POST['action'];
 
-if(isset($action) && $action == 'getNewImage' && isset($_POST['imageId'])) {
-    header('Content-Type: application/json');
-    echo getNewImage( isset($_POST['imageId']));
-} 
+header('Content-Type: application/json');
+
+if(isset($action)){
+    switch($action) {
+        case 'getNewImage':
+               if(isset($_POST['imageId'])) {
+                echo getNewImage($_POST['imageId']);
+               } else {
+                echo json_encode( array('error' => 'imageId is required'));
+               }
+            break;
+        case 'validation':
+            if(isset($_POST['imageId']) && isset($_POST['cellId']) && isset($_POST['questionId'])) {
+                echo validation($_POST['imageId'], $_POST['cellId'], $_POST['questionId']);
+            } else {
+                echo json_encode( array('error' => 'invalid action: validation'));
+            }
+
+            break;
+        default: 
+         echo json_encode( array('error' => 'unknown action'));
+    }
+}
+
 
 function getNewImage ($old_img_id) {
     
         $image = get_new_image($old_img_id);
 
-        return json_encode($image, JSON_PRETTY_PRINT);
+        return json_encode($image);
 }
 
+
+function validation($old_img_id, $id_cell, $id_question) {
+
+    save_selection ($old_img_id, $id_question, $id_cell);
+
+    if(is_valid($id_cell, $id_question)) {
+        
+        if( isset( $_SESSION['counter'] ) ) {
+            $_SESSION['counter'] += 1;
+         }else {
+            $_SESSION['counter'] = 1;
+         }
+        
+        
+        echo json_encode(array(
+            'valid' => true,
+            'count' => $_SESSION['count'],
+            'newImage' => get_new_image($old_img_id),
+            'questions' => get_random_question()
+        ));
+
+    } else {
+        echo json_encode(array(
+            'valid' => false,
+            'count' => $_SESSION['count'],
+            'newImage' => get_new_image ($old_img_id),
+            'questions' => get_random_question()
+        ));
+    }
+
+    if($_SESSION['count'] > 1) {
+        unset($_SESSION['count']);
+        
+    }
+}
