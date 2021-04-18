@@ -80,14 +80,13 @@ $img_id_shown = $images['IdImage'];
 <body>
     <div>
         <a href="#demo">Ouvrir</a>
+        <h1 id="responseMsg" style="display: none; color: blue; margin:100px">Vous êtes humain</h1>
         <div id="demo" class="modal">
             <div class="modal_content">
-                <h1>Essai</h1>
-                <p>Bienvenue sur la fenêtre aide !</p>
+                <p id="affichageSucces" style="display: none;">Bonne réponse</p>
+                <p id="affichageEchec" style="display: none; color:red; ">Mauvaise réponse</p>
                 <a href="#" class="modal_close">&times;</a>
-            </div>
-        </div>
-        <div class="container">
+                <div class="container">
             <div class="row">
 
                 <div class="col-md-6 col-lg-4 col-xl-6">
@@ -98,21 +97,22 @@ $img_id_shown = $images['IdImage'];
                         <div class="border-0" id="essai">
                             <div class="">
                                 <h4>Questions</h4>
-                                <div class="inputGroup">
+                                <div id="questionsGroup" class="inputGroup">
                                     <?php
-                                    //while ($return = $id_Qst->fetch()) {
+                                    
                                     foreach ($questions as $questionObj) {
                                         echo '
                                         <input type="radio" name="question" id="question' . $questionObj['IdQuestion'] . '" value="' . $questionObj['IdQuestion'] . '"  checked > 
-                                        <label for="question"> ' . $questionObj['LibelleQuestion'] . ' </label> <br>
+                                        <label for="question' . $questionObj['IdQuestion'] . '"> ' . $questionObj['LibelleQuestion'] . ' </label> <br>
                                         ';
                                     }
 
                                     ?>
                                 </div>
                                 <div class="row">
-                                    <button type="button" onclick="reloadImg();"><img src="../view/refresh.png" alt='imageRaffraichir' width="20px" height="22px"></button>
-                                    <button type="submit" name="submit" id="actionBtn" class="btn btn-primary" disabled>Valider</button>
+                                    <button type="button" style="margin-left: 50px; margin-right: 50px" onclick="reloadImg();">
+                                    <img src="../view/refresh.png" alt='imageRaffraichir' width="20px" height="22px"></button>
+                                    <button type="button" onclick="checkResponse()" id="actionBtn" class="btn btn-primary" disabled>Valider</button>
                                 </div>
                             </div>
                         </div>
@@ -143,6 +143,9 @@ $img_id_shown = $images['IdImage'];
             </div>
 
         </div>
+            </div>
+        </div>
+
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pikaday/1.6.1/pikaday.min.js"></script>
