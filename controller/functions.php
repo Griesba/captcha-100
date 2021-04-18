@@ -61,14 +61,13 @@ function is_valid($id_cell, $id_question) {
     $instance = ConnectDb::getInstance();
     $conn = $instance->getConnection();
     
+
     $statement =  $conn->prepare('SELECT questionId, cell_id FROM reponses WHERE questionId = :id_question && cell_id = :id_cell');
 
     $statement->bindParam(':id_question', $id_question, PDO::PARAM_INT);
     $statement->bindParam(':id_cell', $id_cell, PDO::PARAM_INT);
     $statement->execute();
-	$results = $statement->fetchall();
-
-    
+	$results = $statement->fetchall();   
     
 
     if(count($results) > 0) {

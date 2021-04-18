@@ -83,8 +83,8 @@ $img_id_shown = $images['IdImage'];
         <h1 id="responseMsg" style="display: none; color: blue; margin:100px">Vous êtes humain</h1>
         <div id="demo" class="modal">
             <div class="modal_content">
-                <p id="affichageSucces" style="display: none;">Bonne réponse</p>
-                <p id="affichageEchec" style="display: none; color:red; ">Mauvaise réponse</p>
+                <p id="affichageSucces" style="display: none;">Vous avez 1 bonne réponse sur deux. </p>
+                <p id="affichageEchec" style="display: none; color:red; ">Mauvaise réponse: Recommencez</p>
                 <a href="#" class="modal_close">&times;</a>
                 <div class="container">
             <div class="row">

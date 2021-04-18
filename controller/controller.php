@@ -45,33 +45,40 @@ function validation($old_img_id, $id_cell, $id_question) {
 
     save_selection ($old_img_id, $id_question, $id_cell);
 
+    $count = 0;
+
     if(is_valid($id_cell, $id_question)) {
         
-        if( isset( $_SESSION['counter'] ) ) {
-            $_SESSION['counter'] += 1;
+        if( isset( $_SESSION['count'] ) ) {
+            $_SESSION['count'] += 1;
          }else {
-            $_SESSION['counter'] = 1;
+            $_SESSION['count'] = 1;
          }
-        
+         
+        $count = $_SESSION['count'];
+        if($count > 1) {
+            $count = 0;
+            $_SESSION['count'] = 0;
+        }
         
         echo json_encode(array(
             'valid' => true,
-            'count' => $_SESSION['count'],
+            'count' => $count,
             'newImage' => get_new_image($old_img_id),
             'questions' => get_random_question()
         ));
 
     } else {
+        $_SESSION['count'] = 0;
         echo json_encode(array(
             'valid' => false,
-            'count' => $_SESSION['count'],
+            'count' => $count,
             'newImage' => get_new_image ($old_img_id),
             'questions' => get_random_question()
         ));
     }
 
     if($_SESSION['count'] > 1) {
-        unset($_SESSION['count']);
-        
+        unset($_SESSION['count']);        
     }
 }
