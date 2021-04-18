@@ -1,13 +1,27 @@
     function reloadImg() {
-        
+        console.log($('#imageId').val());
         $.ajax({
             type:"POST",
-            url:"../controller/captcha.php",
-            data:{'case' :im},
-            success: function(){
-                //alert(id);
+            url:"controller.php",
+            data:{action: 'getNewImage', 'imageId' : $('#imageId').val()},
+            dataType: 'text',
+            success: function(result, status){
+
+            },
+            error: function (resultat, status,error) {
+                console.log('error');
+            }, 
+            complete: function(result){
+                var response = result.response.replace(/\r/g, "").split(/\n/).slice(1).join('');
+                var jsonResponse = JSON.parse(response);
+                $('#imageId').val(jsonResponse.IdImage);
+                console.log(jsonResponse);
+                for (let index = 1; index < 10; index++) {
+                    document.getElementById(index).style.backgroundImage = "url('../public/img/"+ jsonResponse.LienImage +"')";
+                }
             }
         })
+
     }
 
     var questionId;

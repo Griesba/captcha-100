@@ -1,4 +1,9 @@
 <?php
+
+if(session_status() == PHP_SESSION_NONE){
+    session_start();
+}
+
 include_once('dbconnect.php');
 include_once('../controller/functions.php');
 
@@ -119,8 +124,14 @@ if(isset($_POST['questionId']) && isset($_POST['imageId']) && isset($_POST['cell
     $isValid = is_valid($questionId, $cellId);
             
     if($execute === true && $isValid === true){
-        header('Location:../controller/captcha.php');
+        if(!isset($_SESSION['count'])) {
+            $_SESSION['count'] = 1;
+            header('Location:../controller/captcha.php');
+        } else {
+            echo 'vous ête un humain';
+        }        
     }else{
-        echo "failed";
+        $_SESSION['count'] = 0;
+        echo "recommencer";
     }
 }

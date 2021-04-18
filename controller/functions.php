@@ -33,8 +33,8 @@ function get_random_image() {
 function get_new_image($old_img_id) {
     $instance = ConnectDb::getInstance();
     $conn = $instance->getConnection();
-    $statement =  $conn->prepare('SELECT IdImage, LienImage FROM image WHERE IdImage <> ?  ORDER BY rand()');
-    $statement->bindParam('i', $old_img_id);
+    $statement =  $conn->prepare('SELECT IdImage, LienImage FROM image WHERE IdImage <> :imgId  ORDER BY rand()');
+    $statement->bindParam(':imgId', $old_img_id, PDO::PARAM_INT);
     $statement->execute();
 	$results = $statement->fetchall();
     $images = [];
