@@ -36,11 +36,6 @@ $img_id_shown = $images['IdImage'];
             height: 153px !important;
         }
 
-        #refresh {
-            position: absolute;
-            top: 450px;
-            left: 565px;
-        }
     
 	.i1 { background: url(<?php echo $imgtoshow ?>) no-repeat left top; }
 	.i2 { background: url(<?php echo $imgtoshow ?>) no-repeat center top; }
@@ -51,8 +46,7 @@ $img_id_shown = $images['IdImage'];
 	.i7 { background: url(<?php echo $imgtoshow ?>) no-repeat left bottom; }
 	.i8 { background: url(<?php echo $imgtoshow ?>) no-repeat center bottom; }
 	.i9 { background: url(<?php echo $imgtoshow ?>) no-repeat right bottom; }
-    .td { width: 150px; height: 150px; }
-</style>
+    
 
     </style>
 
@@ -70,13 +64,14 @@ $img_id_shown = $images['IdImage'];
         </div>
         <div class="container">
             <div class="row">
-                <form method="post" action="../model/captchaModel.php" class="formulaire">
+
+                    <div class="col-md-6 col-lg-4 col-xl-6">
+                    <form method="post" action="../model/captchaModel.php" class="formulaire">
                     <input type="hidden" name="questionId" id="questionId">
                     <input type="hidden" name="imageId" id="imageId" value="<?= $img_id_shown ?>">
                     <input type="hidden" name="cellId" id="cellId">
-                    <div class="col-md-6 col-lg-4 col-xl-6">
-                        <div class="card border-0" id="essai">
-                            <div class="card-body">
+                        <div class="border-0" id="essai">
+                            <div class="">
                                 <h4>Questions</h4>
                                 <div class="inputGroup">
                                     <?php
@@ -90,14 +85,17 @@ $img_id_shown = $images['IdImage'];
 
                                     ?>
                                 </div>
+                                <div class="row">
+                                    <button type="button" onclick="reloadImg();"><img src="../view/refresh.png" alt='imageRaffraichir' width="20px" height="22px"></button>    
+                                    <button type="submit" name="submit" id="actionBtn" class="btn btn-primary" disabled>Valider</button>
+                                </div>
                             </div>
                         </div>
-                        <button type="submit" name="submit" id="actionBtn" disabled>Valider</button>
-
+                        
                     </div>
                     <div class="col-md-6 col-lg-4 col-xl-6">
-                        <div class="card border-0">
-                            <table width="465" cellspacing="0" cellpadding="0" height="465" >
+                        <div class=" border-0">
+                            <table width="380" height="380" cellspacing="0" cellpadding="0" >
                                 <tr>
                                     <td id="1" class="i1" name="image-tag" value="TOP-LEFT" onClick="get(this.id);"></td>
                                     <td id="2" class="i2" name="image-tag" value="TOP-CENTER" onClick="get(this.id);"></td>
@@ -115,11 +113,10 @@ $img_id_shown = $images['IdImage'];
                                 </tr>
                             </table>
                         </div>
-                    </div>
-                </form>
-                <!--<button type="submit" id="refresh" onclick="location.reload();">Raffraichir ou imageRaffraichir</button>-->
-                <button type="submit" id="refresh" onclick="reloadImg();"><img src="../view/refresh.png" alt='imageRaffraichir' width="20px" height="22px"></button>
+                    </div>               
+
             </div>
+
         </div>
     </div>
 
@@ -132,6 +129,7 @@ $img_id_shown = $images['IdImage'];
     <script src="../vendor/js/theme.js"></script>
     <script src="../public/js/scripts.js"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 </body>
 
 </html>
