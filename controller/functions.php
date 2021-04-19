@@ -50,6 +50,12 @@ function save_selection ($imageId, $questionId, $cellId) {
     $instance = ConnectDb::getInstance();
     $conn = $instance->getConnection();
 
+    $statement =  $conn->prepare('SELECT count FROM counter WHERE  agregat = :agregat');
+    $agregat = '(' . $imageId .','. $questionId . ','. $cellId.')';
+    $statement->bindParam(':imgId', $agregat, PDO::PARAM_STR);
+    $statement->execute();
+
+
     $insertion = "INSERT INTO couple(IdImage, IdQuestion, PositionCouple, CompteurCouple) VALUES ($imageId, $questionId, $cellId, 34234)";
         
     $execute =  $conn-> query($insertion);
