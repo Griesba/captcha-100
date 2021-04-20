@@ -46,6 +46,15 @@ function validation($old_img_id, $id_cell, $id_question) {
     save_selection ($old_img_id, $id_question, $id_cell);
 
     $count = 0;
+    $total = 0;
+
+    if( isset( $_SESSION['total'] ) ) {
+        $_SESSION['total'] += 1;
+     }else {
+        $_SESSION['total'] = 1;
+     }
+     $total = $_SESSION['total'];
+
 
     if(is_valid($id_cell, $id_question)) {
         
@@ -64,6 +73,7 @@ function validation($old_img_id, $id_cell, $id_question) {
         echo json_encode(array(
             'valid' => true,
             'count' => $count,
+            'total' => $total,
             'newImage' => get_new_image($old_img_id),
             'questions' => get_random_question()
         ));
@@ -73,12 +83,14 @@ function validation($old_img_id, $id_cell, $id_question) {
         echo json_encode(array(
             'valid' => false,
             'count' => $count,
+            'total' => $total,
             'newImage' => get_new_image ($old_img_id),
             'questions' => get_random_question()
         ));
     }
 
-    if($_SESSION['count'] > 1) {
-        unset($_SESSION['count']);        
+    if($_SESSION['count'] > 1 || $_SESSION['total'] > 1) {
+        unset($_SESSION['count']);
+        unset($_SESSION['total']);
     }
 }

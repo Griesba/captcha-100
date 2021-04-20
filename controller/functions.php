@@ -50,10 +50,26 @@ function save_selection ($imageId, $questionId, $cellId) {
     $instance = ConnectDb::getInstance();
     $conn = $instance->getConnection();
 
-    $statement =  $conn->prepare('SELECT count FROM counter WHERE  agregat = :agregat');
+    $statement =  $conn->prepare('SELECT count as total FROM counter WHERE  agregat = :agregat LIMIT 1');
     $agregat = '(' . $imageId .','. $questionId . ','. $cellId.')';
-    $statement->bindParam(':imgId', $agregat, PDO::PARAM_STR);
+    $statement->bindParam(':agregat', $agregat, PDO::PARAM_STR);
     $statement->execute();
+    
+    $results = $statement->fetch();
+
+    if($results) {
+        $value = 1 + $results['total'];
+        $stmt = $conn->prepare("UPDATE counter SET count = ? WHERE agregat = ?");
+        $stmt->bindParam(1, $value);
+        $stmt->bindParam(2, $agregat);
+        $stmt->execute();
+    } else {
+        $value = 1;
+        $stmt = $conn->prepare("INSERT INTO counter (agregat, count) VALUES (?, ?)");
+        $stmt->bindParam(1, $agregat);
+        $stmt->bindParam(2, $value);
+        $stmt->execute();
+    }
 
 
     $insertion = "INSERT INTO couple(IdImage, IdQuestion, PositionCouple, CompteurCouple) VALUES ($imageId, $questionId, $cellId, 34234)";
