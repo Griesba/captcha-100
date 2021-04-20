@@ -56,6 +56,9 @@ function checkResponse () {
     console.log('imageId ->' + $('#imageId').val());
     console.log('quesitonId ->' + $('#questionId').val());
 
+    $('#responseMsg').hide();
+    $('#failedResponseMsg').hide();
+    $('#jsonRespons').hide();
 
     $.ajax({
         type:"post",
@@ -73,6 +76,10 @@ function checkResponse () {
             var response = result.response.replace(/\r/g, "").split(/\n/).slice(1).join('');
            
             var jsonResponse = JSON.parse(response);
+
+            $('#jsonRespons').text(JSON.stringify(jsonResponse, undefined, 1));
+            $('#jsonRespons').show();
+
 
             console.log(jsonResponse);
 
@@ -99,16 +106,17 @@ function checkResponse () {
             if(!!jsonResponse.valid) {
                 $('#affichageSucces').show();
                 $('#affichageEchec').hide();
-                $('#responseMsg').hide();
             } else {
                 $('#affichageEchec').show();
                 $('#affichageSucces').hide();
-                $('#responseMsg').hide();
             }
+            
 
             if(jsonResponse.count >= 1) {
-                //document.getElementById('demo').style.display = 'none';
                 $('#responseMsg').show();
+                window.location.href = '#';
+            } else if(jsonResponse.total > 1) {
+                $('#failedResponseMsg').show();
                 window.location.href = '#';
             }
 

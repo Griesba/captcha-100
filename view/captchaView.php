@@ -81,6 +81,7 @@ $img_id_shown = $images['IdImage'];
     <div>
         <a href="#demo">Ouvrir</a>
         <h1 id="responseMsg" style="display: none; color: blue; margin:100px">Vous êtes humain</h1>
+        <h1 id="failedResponseMsg" style="display: none; color: red; margin:100px">Vous n'êtes pas humain</h1>
         <div id="demo" class="modal">
             <div class="modal_content">
                 <p id="affichageSucces" style="display: none;">Vous avez 1 bonne réponse sur deux. </p>
@@ -116,7 +117,8 @@ $img_id_shown = $images['IdImage'];
                                 </div>
                             </div>
                         </div>
-
+                    </form>
+                    
                 </div>
                 <div class="col-md-6 col-lg-4 col-xl-6">
                     <div class=" border-0">
@@ -141,6 +143,8 @@ $img_id_shown = $images['IdImage'];
                 </div>
 
             </div>
+            <pre class="row" style="max-height: 100px; overflow-y: scroll; background: oldlace;font-size: smaller;" id="jsonRespons">                                    
+            </pre>
 
         </div>
             </div>
