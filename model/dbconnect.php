@@ -22,6 +22,7 @@ function connect($host,$dbname,$charset,$user,$password) {
     return $db; 
 }
 $db = connect('localhost','captcha','utf8','root',''); 
+//$db = connect('sqlprive-dn717-001.privatesql','captcha21_db','utf8','captcha21','NyR594zC85SrFGGr5g3Ua86pgFrjB3'); 
 
 
 
@@ -30,6 +31,10 @@ class ConnectDb {
     private static $instance = null;
     private $conn;
     
+/*     private $host = 'sqlprive-dn717-001.privatesql';//'localhost';
+    private $user = 'captcha21';//'root';
+    private $pass = 'NyR594zC85SrFGGr5g3Ua86pgFrjB3';
+    private $name = 'captcha21_db';//'captcha'; */
     private $host = 'localhost';
     private $user = 'root';
     private $pass = '';

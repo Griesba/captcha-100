@@ -73,6 +73,8 @@ function checkResponse () {
         }, 
         complete: function(result){
            
+            console.log(result);
+
             var response = result.response.replace(/\r/g, "").split(/\n/).slice(1).join('');
            
             var jsonResponse = JSON.parse(response);
@@ -112,7 +114,7 @@ function checkResponse () {
             }
             
 
-            if(jsonResponse.count >= 1) {
+            if(jsonResponse.count > 1) {
                 $('#responseMsg').show();
                 window.location.href = '#';
             } else if(jsonResponse.total > 1) {
